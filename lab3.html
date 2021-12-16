@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Лабораторна робота №3</title>
+    <link rel="shortcut icon" href="../static/images/ico.png" type="image/x-icon">
+    <style>
+
+    body { 
+        background: url(https://lh3.googleusercontent.com/proxy/JNzrHYtr9C_auB9y-6v1UaQwzsBYWt2ZTe4i3xow32DoIALR_ep4KEbDlo-GwTDLP-TmSf8WyIq54dDUy1gFGG8OkD8owPx9D2XEt8zad7iTpoKsmPB0Sd0PnYG1VQGQUlsosunoWa4UFW2gKnn5) ;
+        -moz-background-size: 100%;
+        -webkit-background-size: 100%; 
+        -o-background-size: 100%; 
+        background-size: 100%; 
+    }
+
+    #labcontent { 
+        position: static;
+        background: rgb(255, 255, 255);
+        width: 70%;
+        margin: 0 auto;
+        padding: 20px;
+        margin-top: 4%;
+        margin-left: auto;
+        margin-right: auto;
+        outline: 4px solid rgb(0, 0, 0);
+        overflow: auto;
+    }
+
+   #hombutton{        
+        position: fixed ;
+        width: 5%;	 /* Размеры */
+        background: rgb(255, 255, 255); /* Цвет фона */
+        outline: 2px solid rgb(0, 0, 0); /* Чёрная рамка */
+        color: rgb(0, 0, 0);
+
+        margin-left:90%;
+
+   }
+
+   #exercise {
+        position: static;
+        width: 30%;
+        height: 30%;
+    }
+
+    </style>
+
+    <div id="body">
+        <button id="hombutton" type="button" onClick='location.href="/"'>
+            <img src="/static/images/home.png"width="70%" height="70%">
+        </button>
+
+        <div id="labcontent">
+            <center>
+                <h1>Лабораторна робота №3</h1>
+                <h2>Форми lambda та let, вираз присвоєння set! для розв’язання нелінійних рівнянь та чисельного інтегрування функцій</h2>
+                <h3>Варіант №9</h3>
+                <hr>
+                <h3 align="left">Виконав студент IV-того курсу <br> Групи ІПЗ-42 <br> Ковтун Микита</h3>
+            </center>
+
+            <hr>
+            <h2>  <center> Зміст</center>  </h2>
+
+            <h3><a href="#k1">Мета</a></h3>
+            <h3><a href="#k2">Умова задачі</a></h3>
+            <h3><a href="#k3">Структура програми</a></h3>
+            <h3><a href="#k4">Обгрунтування вибору середовища</a></h3>
+            <h3><a href="#k5">Код програми в коментарях</a></h3>
+            <h3><a href="#k6">Посилання на проект з вихідним кодом</a></h3>
+            <h3><a href="#k7">Скріншоти результатів</a></h3>
+            <h3><a href="#k8">Висновки</a></h3>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k1"></a>  Мета роботи </h2>
+            <p>
+                Розв’язати нелінійні рівняння та здійснити чисельне інтегрування функцій наближеними методами, використовуючи мови функціонального програмування та lambda, let та set! форми.
+            </p>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k2"></a>  Умова задачі </h2>
+            <p align="justify">
+                9.1. Знайти корені нелінійного рівняння виду  . Пошук наближеного значення хоча б одного кореня рівняння f(x) = 0 на відрізку [a; b] здійснювати методами простої ітерації та дотичних. Значення a, b інтервалу вибрати самостійно. Порівняти результати розв’язків двома методами.
+                <br><br>
+                9.2. Написати процедури для обчислити інтеграла за формулами правих прямокутників і Сімпсона. Порівняти результати обчислення
+                <br><img src="static/images/lab3/ex3.png" width=300px>
+            </p>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k3"></a>  Структура програми (HIPO діаграма) </h2>
+            <center>
+                <img src="/static/images/lab3/lab3.png">
+            </center>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k4"></a>  Обгрунтування вибору середовища та мови функціонального програмування  </h2>
+            <p>
+                Онлайн середовище jdoodle та мова функціонального програмування Scheme були обрані через:
+                <br>1) Мова Scheme, що є діалектом мови LISP, проста і популярна мова функціонального програмування
+                <br>2) В лекціях функціональне програмування розглядається на прикладах коду Scheme
+                <br>3) Середовище jdoodle не потрібно встановлювати на комп'ютер. 
+            </p>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>            
+            <h2 align="center"><a name="k5"></a>  Код програми з коментарями  </h2>
+            <p>Завдання №1</p>
+            <p><pre>
+                ; Початковий вигляд функції 2x - cos(x) = 0
+                (define my-f (lambda (x)
+                    (- (* 2 x) (cos x)))
+                )
+                
+                ; Канонічний вигляд функції 2x - cos(x) = 0
+                (define kanon-f (lambda (x)
+                    (/ (cos x) 2))
+                )
+                
+                ; Похідна функції 2x - cos(x) = 0
+                (define my-f1 (lambda (x)
+                    (+ (sin x) 2))
+                )
+                
+                ; Функція для розвязку рівняння методом простої ітерації
+                (define (simple-iteration f init-x acc)
+                    (define (inner-logic current-x)
+                        (let ((next-x (f current-x)))
+                            (if (< (abs (- current-x next-x)) acc)
+                            next-x
+                            (inner-logic next-x)))
+                    )
+                    (inner-logic init-x)
+                )
+                
+                
+                ; Функція для розвязку рівняння методом дотичних
+                (define (tangent-method f f1 init-x acc)
+                    (define (inner-logic current-x)
+                        (let* ((y (f current-x)) (y1(f1 current-x)) (next-x (- current-x (/ y y1))))
+                        (if (< (abs y) acc)
+                        current-x
+                        (inner-logic next-x))
+                        )
+                    )
+                    (inner-logic init-x)
+                )
+                
+                
+                
+                (define acc 0.000001) ; Похибка 10^-6
+                (define root1 (simple-iteration kanon-f 10 acc))
+                (define root2 (tangent-method my-f my-f1 10 acc))
+                
+                (display "\nroot1 = ")
+                (display root1)
+                (display "\nroot2 = ")
+                (display root2)
+                (display "\nmistake = ")
+                (display (abs (- root1 root2)))
+                
+            </pre></p>
+
+            <p>Завдання №2</p>
+            <p><pre>
+                ; функція для обчислення визначеного інтегралу
+                (define (f x)
+                    (sin (- x (cos x)))
+                )
+                
+                ; межі інтегрування
+                
+                (define a 0)
+                (define b 3.141592)
+                
+                
+                ; Функція для обчислення визначеного інтегралу методом правих прямокутників
+                (define (right-rectangles f a b acc)
+                
+                    (define (get-xi i n) ; функція для отримання наступного xi
+                        (+ a (* i (/ (- b a) n)))
+                    )
+                
+                    (define (sum-f sum i n) ; процедура, яка рахує суму значень функції в n точках на проміжку a-b
+                        (if (> i n)
+                        sum
+                        (sum-f (+ sum (f (get-xi i n))) (+ i 1) n)
+                        )
+                    )
+                
+                    (define (integral n)
+                        (* (/ (- b a) n)(sum-f 0 1 n))
+                    )
+                
+                    (define (inner-logic n)
+                        (if (< (abs (- (integral n) (integral (+ n 1)))) acc)
+                        (integral (+ n 1))
+                        (inner-logic (+ n 1))
+                        )
+                    )
+                
+                    (inner-logic 1)
+                )
+                
+                
+                
+                ; Функція для обчислення визначеного інтегралу методом Сімпсона
+                
+                (define (simpson f a b acc)
+                
+                    (define (get-xi i n) ; функція для отримання наступного xi
+                        (+ a (* i (/ (- b a) n)))
+                    )
+                
+                    (define (get-sum xi h) ; функція яка реалізує формулу Сімпсона
+                        (* (/ h 3) (+ (f xi) (* 4 (f (+ xi h))) (f (+ xi (* 2 h)))))
+                    )
+                
+                    (define (s-sum-f sum i n) ; Функція яка рахує суму всіх часстин, на які поділено відрізок a-b
+                        (if (> i n)
+                        sum
+                        (s-sum-f (+ sum (get-sum (get-xi i n) (/ (- b a) n))) (+ i 2) n)
+                        )
+                    )
+                
+                    (define (s-integral n)
+                        (s-sum-f 0 1 n)
+                    )
+                
+                    (define (inner-logic n)
+                        (if (< (abs (- (s-integral n) (s-integral (+ n 2)))) acc)
+                        (s-integral (+ n 2))
+                        (inner-logic (+ n 2))
+                        )
+                    )
+                
+                    (inner-logic 2)
+                )
+                
+                
+                (define acc 0.000001) ; Похибка 10^-6
+                (define s1 (right-rectangles f a b acc))
+                (define s2 (simpson f a b acc))
+                
+                (display "\ns1 = ")
+                (display s1)
+                (display "\ns2 = ")
+                (display s2)
+                (display "\nmistake = ")
+                (display (abs (- s1 s2)))
+            </pre></p>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k6"></a>  Посилання на проект з вихідним кодом </h2>
+            <a href="https://www.jdoodle.com/embed/v0/4e4k">Код завдання №1 в jdoodle</a>
+            <br><a href="https://www.jdoodle.com/embed/v0/4e4m">Код завдання №2 в jdoodle</a>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k7"></a>  Скрін-шот результатів </h2>
+            <center>
+                <br><img src="/static/images/lab3/1.png">
+                <br><p>Скрін-шот №1</p>
+                <br><img src="/static/images/lab3/2.png">
+                <br><p >Скрін-шот №2</p>
+            </center>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k8"></a>  Висновок </h2>
+            <p>
+                В результаті виконання даної лабораторної роботи було виконано два завдання. Перше з них вимагало реалізувати два методи для розвязку нелінійних рівнянь, а саме це були метод простої ітерації та метод дотичних. Порівнюючи результати роботи даних методів можна побачити що розбіжності в отриманих розвязках починаються тільки із сьомої цифри після коми. Друге завдання полягало в реалізації таких методів чисельного інтегрування як метод правих прямокутників та метод Сімпсона. Знову ж таки порівнюючи отримані результати, можна помітити, що розбіжності починаються тільки з пятої цифри після коми.
+            </p>
+              
+        </div>
+    </div>
+</head>

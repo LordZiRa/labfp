@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Лабораторна робота №6</title>
+    <link rel="shortcut icon" href="../static/images/ico.png" type="image/x-icon">
+    <style>
+
+    body { 
+        background: url(https://lh3.googleusercontent.com/proxy/JNzrHYtr9C_auB9y-6v1UaQwzsBYWt2ZTe4i3xow32DoIALR_ep4KEbDlo-GwTDLP-TmSf8WyIq54dDUy1gFGG8OkD8owPx9D2XEt8zad7iTpoKsmPB0Sd0PnYG1VQGQUlsosunoWa4UFW2gKnn5) ;
+        -moz-background-size: 100%;
+        -webkit-background-size: 100%; 
+        -o-background-size: 100%; 
+        background-size: 100%; 
+    }
+
+    #labcontent { 
+        position: static;
+        background: rgb(255, 255, 255);
+        width: 70%;
+        margin: 0 auto;
+        padding: 20px;
+        margin-top: 4%;
+        margin-left: auto;
+        margin-right: auto;
+        outline: 4px solid rgb(0, 0, 0);
+        overflow: auto;
+    }
+
+   #hombutton{        
+        position: fixed ;
+        width: 5%;	 /* Размеры */
+        background: rgb(255, 255, 255); /* Цвет фона */
+        outline: 2px solid rgb(0, 0, 0); /* Чёрная рамка */
+        color: rgb(0, 0, 0);
+
+        margin-left:90%;
+
+   }
+
+   #exercise {
+        position: static;
+        width: 30%;
+        height: 30%;
+    }
+
+    </style>
+
+    <div id="body">
+        <button id="hombutton" type="button" onClick='location.href="/"'>
+            <img src="/static/images/home.png"width="70%" height="70%">
+        </button>
+
+        <div id="labcontent">
+            <center>
+                <h1>Лабораторна робота №6</h1>
+                <h2>Обробка структур типу векторів і матриць, стеків та черг 
+                    мовами функціонального програмування
+                    </h2>
+                <h3>Варіант №9</h3>
+                <hr>
+                <h3 align="left">Виконав студент IV-того курсу <br> Групи ІПЗ-42 <br> Ковтун Микита</h3>
+            </center>
+
+            <hr>
+            <h2>  <center> Зміст</center>  </h2>
+
+            <h3><a href="#k1">Мета</a></h3>
+            <h3><a href="#k2">Умова задачі</a></h3>
+            <h3><a href="#k3">Структура програми</a></h3>
+            <h3><a href="#k4">Обгрунтування вибору середовища</a></h3>
+            <h3><a href="#k5">Код програми в коментарях</a></h3>
+            <h3><a href="#k6">Посилання на проект з вихідним кодом</a></h3>
+            <h3><a href="#k7">Скріншоти результатів</a></h3>
+            <h3><a href="#k8">Висновки</a></h3>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k1"></a>  Мета роботи </h2>
+            <p>
+                Опанувати теоретичні основи обробки структур типу векторів і матриць, стеків та черг мовами функціонального програмування та розробити програми їх реалізації
+            </p>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k2"></a>  Умова задачі </h2>
+            <p align="justify">
+                9.1. Створити вектор чисел з додатними, від’ємними та нульовими елементами. Переставити елементи вектору так, щоб спочатку були розташовані всі від’ємні елементи, потім усі додатні елементи, потім усі нульові. Вивести вектор на екран 
+
+                <br><br>
+                9.2. Створити чергу з символів, серед яких зустрічаються символи ‘( , ‘) . Створити другу чергу, в яку включити символи, які розміщені між парою дужок Надрукувати вихідні черги.
+            </p>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k3"></a>  Структура програми (HIPO діаграма) </h2>
+            <center>
+                <img src="/static/images/lab6/lab6.png">
+            </center>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k4"></a>  Обгрунтування вибору середовища та мови функціонального програмування  </h2>
+            <p>
+                Онлайн середовище jdoodle та мова функціонального програмування Scheme були обрані через:
+                <br>1) Мова Scheme, що є діалектом мови LISP, проста і популярна мова функціонального програмування
+                <br>2) В лекціях функціональне програмування розглядається на прикладах коду Scheme
+                <br>3) Середовище jdoodle не потрібно встановлювати на комп'ютер. 
+            </p>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>            
+            <h2 align="center"><a name="k5"></a>  Код програми з коментарями  </h2>
+            <p>Завдання №1</p>
+            <p><pre>
+            (define (stop-sorting vect)
+                (define (inner n)
+                    (if (< n (- (vector-length vect) 1))
+                    (if (or (and (> (vector-ref vect n)
+                    (vector-ref vect (+ n 1)))
+                    (not (= (vector-ref vect (+ n 1)) 0)))
+                    (and (= (vector-ref vect n) 0)
+                    (not (= (vector-ref vect (+ n 1)) 0))))
+                    #f
+                    (inner (+ n 1)))
+                    
+                    #t)
+                    )
+                (if (not (= (vector-length vect) 0))
+                (inner 0))
+            )
+            
+            
+            
+            (define (sort vect)
+                (define (inner-sort vect n)
+                    (if (< n (- (vector-length vect) 1))
+                    (if (or (and (> (vector-ref vect n)
+                    (vector-ref vect (+ n 1)))
+                    (not (= (vector-ref vect (+ n 1)) 0)))
+                    (and (= (vector-ref vect n) 0)
+                    (not (= (vector-ref vect (+ n 1)) 0))))
+                    (let ((t1 (vector-ref vect n))
+                    (t2 (vector-ref vect (+ n 1))))
+                    (vector-set! vect n t2)
+                    (vector-set! vect (+ n 1) t1)
+                    (inner-sort vect (+ n 1)))
+                    (inner-sort vect (+ n 1)))
+                    vect)
+                )
+                
+                (if (not (stop-sorting vect))
+                (begin (inner-sort vect 0) (sort vect))
+                vect
+                )
+            )
+            
+            
+            (define my-v (vector 5 7 -1 2 0 -6 4 0)
+            )
+            
+            my-v
+            
+            (display (sort my-v))
+            </pre></p>
+
+            <p>Завдання №2</p>
+            <p><pre>
+                ;Реалізація черги 
+                (define (make-queue)
+                    (define p (cons '() '() ) )
+                    (cons p p)
+                )
+                
+                ;Перевірка черги на пустоту
+                (define (null-queue? q)
+                    (and (eq? (front q) (rear q)) (eq? (car (front q)) '() ))
+                )
+                
+                ;селектор (доступ) до першого елемента черги
+                (define (front q)
+                    (car q)
+                )
+                
+                ;селектор (доступ) до останнього елемента черги
+                (define (rear q)
+                    (cdr q)
+                )
+                
+                
+                
+                ;додавання нового елемента в чергу
+                (define (push q e)
+                    (define p (cons e '()))
+                    (if (null-queue? q)
+                    (begin (set-car! q p) (set-cdr! q p))
+                    (begin (set-cdr! (rear q) p) (set-cdr! q p)))
+                )
+                
+                
+                
+                ;вилучення елемента з черги
+                
+                (define (pop q)
+                    (define x 0)
+                    (if (null-queue? q)
+                    'Empty ;==== виведення повідомдення про пусту чергу
+                    
+                    (if (and (eq? (front q) (rear q)) (eq? '() (cdr (front q))))
+                    (begin (set! x (car (front q))) (set-car! (front q) '() ) x )
+                    (begin (set! x (car (front q))) (set-car! q (cdr (front q)) ) x)))
+                )
+                
+                
+                
+                (define (make-new-queue q)
+                
+                    (define nq (make-queue))
+                    (define flag #f)
+                    (define (inner q)
+                    
+                    (if (not (null-queue? q))
+                    (let ((x (pop q)))
+                    (cond ((eq? x "(")
+                    (set! flag #t))
+                    ((eq? x ")")
+                    (set! flag #f))
+                    (else
+                    (if flag
+                    (push nq x))))
+                    (inner q))
+                    nq))
+                    (inner q)
+                
+                )
+                
+                (define my-qu (make-queue))
+                
+                
+                (push my-qu 1)
+                (push my-qu 2)
+                (push my-qu "(")
+                (push my-qu 3)
+                (push my-qu 4)
+                (push my-qu 5)
+                (push my-qu ")")
+                (push my-qu 6)
+                (push my-qu 7)
+                
+                (display (front my-qu))
+                
+                (define new-q (make-new-queue my-qu))
+                (newline)
+                (display  (front new-q))
+                
+                
+            </pre></p>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k6"></a>  Посилання на проект з вихідним кодом </h2>
+            <a href="https://www.jdoodle.com/embed/v0/4e4w">Код завдання №1 в jdoodle</a>
+            <br><a href="https://www.jdoodle.com/embed/v0/4e4A">Код завдання №2 в jdoodle</a>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k7"></a>  Скрін-шот результатів </h2>
+            <center>
+                <br><img src="/static/images/lab6/1.png">
+                <br><p>Скрін-шот №1</p>
+                <br><img src="/static/images/lab6/2.png">
+                <br><p >Скрін-шот №2</p>
+            </center>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k8"></a>  Висновок </h2>
+            <p>
+                В процесі виконання даної лабораторної роботи було вирішено два задання. Для виконання першого завдання було створено вектор чисел з додатними, від’ємними та нульовими елементами. Після чого елементи вектору було переставлено так, щоб спочатку були розташовані всі від’ємні елементи, потім усі додатні елементи, потім усі нульові. В другому завдання було створено чергу з символів, серед яких зустрічаються символи ‘( , ‘) . Далі створено другу чергу, в яку включено символи, які розміщені між парою дужок.
+            </p>
+
+              
+        </div>
+    </div>
+</head>
