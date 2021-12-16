@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Лабораторна робота №8</title>
+    <link rel="shortcut icon" href="../static/images/ico.png" type="image/x-icon">
+    <style>
+
+    body { 
+        background: url(https://lh3.googleusercontent.com/proxy/JNzrHYtr9C_auB9y-6v1UaQwzsBYWt2ZTe4i3xow32DoIALR_ep4KEbDlo-GwTDLP-TmSf8WyIq54dDUy1gFGG8OkD8owPx9D2XEt8zad7iTpoKsmPB0Sd0PnYG1VQGQUlsosunoWa4UFW2gKnn5) ;
+        -moz-background-size: 100%;
+        -webkit-background-size: 100%; 
+        -o-background-size: 100%; 
+        background-size: 100%; 
+    }
+
+    #labcontent { 
+        position: static;
+        background: rgb(255, 255, 255);
+        width: 70%;
+        margin: 0 auto;
+        padding: 20px;
+        margin-top: 4%;
+        margin-left: auto;
+        margin-right: auto;
+        outline: 4px solid rgb(0, 0, 0);
+        overflow: auto;
+    }
+
+   #hombutton{        
+        position: fixed ;
+        width: 5%;	 /* Размеры */
+        background: rgb(255, 255, 255); /* Цвет фона */
+        outline: 2px solid rgb(0, 0, 0); /* Чёрная рамка */
+        color: rgb(0, 0, 0);
+
+        margin-left:90%;
+
+   }
+
+   #exercise {
+        position: static;
+        width: 30%;
+        height: 30%;
+    }
+
+    </style>
+
+    <div id="body">
+        <button id="hombutton" type="button" onClick='location.href="/"'>
+            <img src="/static/images/home.png"width="70%" height="70%">
+        </button>
+
+        <div id="labcontent">
+            <center>
+                <h1>Лабораторна робота №8</h1>
+                <h2>Символьні обчислення мовами функціонального програмування.
+                    Операції з многочленами. 
+                    </h2>
+                <h3>Варіант №9</h3>
+                <hr>
+                <h3 align="left">Виконав студент IV-того курсу <br> Групи ІПЗ-42 <br> Ковтун Микита</h3>
+            </center>
+
+            <hr>
+            <h2>  <center> Зміст</center>  </h2>
+
+            <h3><a href="#k1">Мета</a></h3>
+            <h3><a href="#k2">Умова задачі</a></h3>
+            <h3><a href="#k3">Структура програми</a></h3>
+            <h3><a href="#k4">Обгрунтування вибору середовища</a></h3>
+            <h3><a href="#k5">Код програми в коментарях</a></h3>
+            <h3><a href="#k6">Посилання на проект з вихідним кодом</a></h3>
+            <h3><a href="#k7">Скріншоти результатів</a></h3>
+            <h3><a href="#k8">Висновки</a></h3>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k1"></a>  Мета роботи </h2>
+            <p>
+                Опанувати теоретичні основи символьних обчислень мовами функціонального програмування. Розробити програми символьного диференціювання та реалізації арифметики поліномів 
+            </p>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k2"></a>  Умова задачі </h2>
+            <p align="justify">
+                Написати програму символьного диференціювання по одній змінній алгебраїчних виразів, які містять усі арифметичні операції  (+, –, *, /) та тригонометричні функції sh(x),, ch(x), arctg(x), arcsin(x). Результат подати у формі  алгебраїчного виразу. Значення алгебраїчного виразу при заданому користувачем значенні змінної не обчислювати.
+            </p>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k3"></a>  Структура програми (HIPO діаграма) </h2>
+            <center>
+                <img src="/static/images/lab8/lab8.png">
+            </center>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k4"></a>  Обгрунтування вибору середовища та мови функціонального програмування  </h2>
+            <p>
+                Онлайн середовище jdoodle та мова функціонального програмування Scheme були обрані через:
+                <br>1) Мова Scheme, що є діалектом мови LISP, проста і популярна мова функціонального програмування
+                <br>2) В лекціях функціональне програмування розглядається на прикладах коду Scheme
+                <br>3) Середовище jdoodle не потрібно встановлювати на комп'ютер. 
+            </p>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>            
+            <h2 align="center"><a name="k5"></a>  Код програми з коментарями  </h2>
+            <p>Завдання №1</p>
+            <p><pre>
+                ;========= символьне диференціювання====
+
+                (define (same-variable? v1 v2)
+                    (and (variable? v1) (variable? v2) (eq? v1 v2))
+                )
+                
+                (define (variable? x)
+                    (symbol? x)
+                )
+                
+                (define (sum? x)
+                    (and (pair? x) (eq? (car x) '+))
+                )
+                
+                (define (minus? x)
+                    (and (pair? x) (eq? (car x) '-))
+                )
+                
+                
+                (define (product? x) 
+                    (and (pair? x) (eq? (car x) '*))
+                )
+                
+                
+                (define (devide? x)
+                    (and (pair? x) (eq? (car x) '/))
+                )
+                
+                
+                (define (sh? x)
+                    (and (pair? x) (eq? (car x) 'sh))
+                )
+                
+                
+                (define (ch? x)
+                    (and (pair? x) (eq? (car x) 'ch))
+                )
+                
+                
+                
+                (define (arctg? x)
+                    (and (pair? x) (eq? (car x) 'arctg))
+                )
+                
+                
+                
+                (define (arcsin? x)
+                    (and (pair? x) (eq? (car x) 'arcsin))
+                )
+                
+                
+                
+                (define (getFirst s) (cadr s)); взяти перший аргумент
+                (define (getSecond s) (caddr s)); взяти другий аргумент
+                
+                
+                
+                (define (make-sum a1 a2)
+                    (list '+ a1 a2)
+                )
+                
+                
+                (define (make-product m1 m2)
+                    (list '* m1 m2)
+                )
+                
+                
+                
+                (define (make-devide m1 m2)
+                    (list '/ m1 m2) 
+                )
+                
+                
+                
+                (define (make-minus a1 a2)
+                    (list '- a1 a2)
+                )
+                
+                
+                
+                (define (make-sh a1 a2 )
+                    (list `* a2 (list 'ch a1))
+                )
+                
+                
+                
+                (define (make-ch a1 a2 )
+                    (list `* a2 (list 'sh a1))
+                )
+                
+                
+                
+                (define (make-arctg a1 a2 )
+                    (list `* a2 (list '/ '-1 (list '+ '1 (list '* a1 a1))))
+                )
+                
+                
+                
+                (define (make-arcsin a1 a2 )
+                    (list `* a2 (list '/ '1 (list 'sqrt (list '- '1 (list '* a1 a1)))))
+                )
+                
+                
+                
+                (define (deriv exp var)
+                    (cond
+                    ((number? exp) 0)
+                    ((variable? exp)
+                    
+                    (if (same-variable? exp var)
+                    1
+                    0)
+                    )
+                    
+                    ((sum? exp)
+                    (make-sum (deriv (getFirst exp) var) (deriv (getSecond exp) var)))
+                    
+                    
+                    ((minus? exp)
+                    (make-minus (deriv (getFirst exp) var) (deriv (getSecond exp) var)))
+                    
+                    
+                    ((product? exp)
+                    (make-sum (make-product (getFirst exp) (deriv (getSecond exp) var))
+                    
+                    (make-product (deriv (getFirst exp) var) (getSecond exp))))
+                    
+                    ((devide? exp)
+                    (make-devide
+                    
+                    (make-minus
+                    (make-product (deriv (getFirst exp) var)
+                    (getSecond exp))
+                    
+                    
+                    (make-product (getFirst exp)
+                    (deriv (getSecond exp) var)))
+                    (make-product (getSecond exp)
+                    (getSecond exp))))
+                    
+                    
+                    
+                    ((sh? exp) (make-sh (getFirst exp) (deriv (getFirst exp) var)))
+                    
+                    
+                    ((ch? exp) (make-ch (getFirst exp) (deriv (getFirst exp) var)))
+                    
+                    
+                    
+                    ((arctg? exp) (make-arctg (getFirst exp) (deriv (getFirst exp) var)))
+                    
+                    
+                    
+                    ((arcsin? exp) (make-arcsin (getFirst exp) (deriv (getFirst exp) var)))
+                    
+                    
+                    (else
+                    "unknown expression type - DERIV" ))
+                )
+                
+                
+                (define res1 (deriv '(arcsin x) 'x))
+                (define res2 (deriv '(arctg x) 'x))
+                (define res3 (deriv '(sh x) 'x))
+                (define res4 (deriv '(ch x) 'x))
+                (define res5 (deriv '(* x y) 'x))
+                (define res6 (deriv '(! x y) 'x))
+                
+                
+                (display res1) (newline)
+                (display res2) (newline)
+                (display res3) (newline)
+                (display res4) (newline)
+                (display res5) (newline)
+                (display res6) (newline)
+                
+                
+                (let ((port (open-output-file "/myfiles/ff1.txt")))
+                (write res1 port)
+                (write res2 port)
+                (write res3 port)
+                (write res4 port)
+                (write res5 port)
+                (write res6 port)
+                (close-output-port port))
+            </pre></p>
+
+
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k6"></a>  Посилання на проект з вихідним кодом </h2>
+            <a href="https://www.jdoodle.com/embed/v0/4e4N">Код завдання №1 в jdoodle</a>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k7"></a>  Скрін-шот результатів </h2>
+            <center>
+                <br><img src="/static/images/lab8/1.png">
+                <br><p>Скрін-шот №1</p>
+
+            </center>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k8"></a>  Висновок </h2>
+            <p>
+                В процесі виконання даної лабораторної роботи було вирішено одне задання. А саме, написано програму символьного диференціювання по одній змінній алгебраїчних виразів, які містять усі арифметичні операції (+, –, *, /) та тригонометричні функції sh(x), ch(x), arctg(x), arcsin(x). Результат подано у формі алгебраїчного виразу. Значення алгебраїчного виразу при заданому користувачем значенні змінної не обчислюється. Окрім цього, отримані результати диференціювання записуються в окремий файл.
+            </p>
+              
+        </div>
+    </div>
+</head>

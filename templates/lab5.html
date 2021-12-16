@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Лабораторна робота №5</title>
+    <link rel="shortcut icon" href="../static/images/ico.png" type="image/x-icon">
+    <style>
+
+    body { 
+        background: url(https://lh3.googleusercontent.com/proxy/JNzrHYtr9C_auB9y-6v1UaQwzsBYWt2ZTe4i3xow32DoIALR_ep4KEbDlo-GwTDLP-TmSf8WyIq54dDUy1gFGG8OkD8owPx9D2XEt8zad7iTpoKsmPB0Sd0PnYG1VQGQUlsosunoWa4UFW2gKnn5) ;
+        -moz-background-size: 100%;
+        -webkit-background-size: 100%; 
+        -o-background-size: 100%; 
+        background-size: 100%; 
+    }
+
+    #labcontent { 
+        position: static;
+        background: rgb(255, 255, 255);
+        width: 70%;
+        margin: 0 auto;
+        padding: 20px;
+        margin-top: 4%;
+        margin-left: auto;
+        margin-right: auto;
+        outline: 4px solid rgb(0, 0, 0);
+        overflow: auto;
+    }
+
+   #hombutton{        
+        position: fixed ;
+        width: 5%;	 /* Размеры */
+        background: rgb(255, 255, 255); /* Цвет фона */
+        outline: 2px solid rgb(0, 0, 0); /* Чёрная рамка */
+        color: rgb(0, 0, 0);
+
+        margin-left:90%;
+
+   }
+
+   #exercise {
+        position: static;
+        width: 30%;
+        height: 30%;
+    }
+
+    </style>
+
+    <div id="body">
+        <button id="hombutton" type="button" onClick='location.href="/"'>
+            <img src="/static/images/home.png"width="70%" height="70%">
+        </button>
+
+        <div id="labcontent">
+            <center>
+                <h1>Лабораторна робота №5</h1>
+                <h2>Обробка раціональних та комплексних чисел 
+                    мовами функціонального програмування
+                    </h2>
+                <h3>Варіант №9</h3>
+                <hr>
+                <h3 align="left">Виконав студент IV-того курсу <br> Групи ІПЗ-42 <br> Ковтун Микита</h3>
+            </center>
+
+            <hr>
+            <h2>  <center> Зміст</center>  </h2>
+
+            <h3><a href="#k1">Мета</a></h3>
+            <h3><a href="#k2">Умова задачі</a></h3>
+            <h3><a href="#k3">Структура програми</a></h3>
+            <h3><a href="#k4">Обгрунтування вибору середовища</a></h3>
+            <h3><a href="#k5">Код програми в коментарях</a></h3>
+            <h3><a href="#k6">Посилання на проект з вихідним кодом</a></h3>
+            <h3><a href="#k7">Скріншоти результатів</a></h3>
+            <h3><a href="#k8">Висновки</a></h3>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k1"></a>  Мета роботи </h2>
+            <p>
+                Опанувати технологію абстракції даних в мовах функціонального програмування. Реалізувати програму обробки раціональних та комплексних чисел мовами функціонального програмування, представивши ці числа конструкціями типу «пара»
+            </p>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k2"></a>  Умова задачі </h2>
+            <p align="justify">
+                9.1. Створити список з парною кількістю елементів, які є різними раціональними числами у вигляді дробив. Для кожної пари елементів списку вивести повідомлення про їх рівність або нерівність. Для розв’язання задачі привести усі дроби до спільного знаменника. Надрукувати список після приведення елементів до спільного знаменника. 
+                <br><br>
+                9.2. Створити список з парною кількістю елементів, які є комплексними числами в алгебраїчній формі a + ib. Створити новий список, елементами яких є добутки кожної пари комплексних чисел першого списку. Надрукувати новий список. 
+            </p>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k3"></a>  Структура програми (HIPO діаграма) </h2>
+            <center>
+                <img src="/static/images/lab5/lab5.png">
+            </center>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k4"></a>  Обгрунтування вибору середовища та мови функціонального програмування  </h2>
+            <p>
+                Онлайн середовище jdoodle та мова функціонального програмування Scheme були обрані через:
+                <br>1) Мова Scheme, що є діалектом мови LISP, проста і популярна мова функціонального програмування
+                <br>2) В лекціях функціональне програмування розглядається на прикладах коду Scheme
+                <br>3) Середовище jdoodle не потрібно встановлювати на комп'ютер. 
+            </p>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>            
+            <h2 align="center"><a name="k5"></a>  Код програми з коментарями  </h2>
+            <p>Завдання №1</p>
+            <p><pre>
+                ; Функція для виводу дробів із списку на екран
+                (define (print numbers)
+                    (if (not (null? numbers))
+                    (begin
+                    (display (car numbers))
+                    (display "/")
+                    (display (cadr numbers))
+                    
+                    (if (not (null? (cddr numbers))) (display ", "))
+                    (print (cddr numbers)))
+                    )
+                )
+                
+                ; Функція для визначення спільного знаменника дробів зі списку
+                (define (get-denominator numbers)
+                    (if (not (null? numbers))
+                    (lcm (cadr numbers) (get-denominator (cddr numbers)))
+                    1
+                    )
+                )
+                
+                ; Функція, яка повертає новий чисельник дробу відповідно до нового знаменника
+                (define (new-numerator numerator denominator new-denominator)
+                    (* numerator (/ new-denominator denominator))
+                    )
+                
+                
+                ; Функція, яка повертає новий список із дробами, в яких всі вони зі спільним знаменником
+                (define (to-common-denominator numbers)
+                    (define (inner nums d)
+                        (if (not (null? nums))
+                        (append (list (new-numerator (car nums) (cadr nums) d) d) (inner (cddr nums) d))
+                        '()
+                        )
+                    )
+                    (inner numbers (get-denominator numbers))
+                )
+                
+                
+                
+                ; Функція для вирішення першого завдання лабораторної роботи
+                
+                (define (task-1 numbers)
+                    (define (inner-2 nums n d common-d)
+                        (if (not (null? nums))
+                        (begin
+                        (display n)
+                        (display "/")
+                        (display d)
+                        
+                        (if (= (new-numerator n d common-d) (new-numerator (car nums) (cadr nums) common-d))
+                        (display " = ")
+                        (display " ! ")
+                        )
+                        
+                        (display (car nums))
+                        (display "/")
+                        (display (cadr nums))
+                        (newline)
+                        
+                        (inner-2 (cddr nums) n d common-d))
+                        )
+                
+                    )
+                    
+                    
+                    (if (not (null? (cddr numbers)))
+                    (begin
+                    (inner-2 (cddr numbers) (car numbers) (cadr numbers) (get-denominator numbers))
+                    (task-1 (cddr numbers)))
+                    )
+                )
+                
+                
+                
+                
+                
+                (define my-numbers (list 1 2 3 4 6 8 7 8))
+                (print my-numbers)
+                (newline)
+                
+                (define new-my-numbers (to-common-denominator my-numbers))
+                (print new-my-numbers)
+                
+                (newline)
+                (newline)
+                (task-1 my-numbers)
+                
+                
+                
+                
+            </pre></p>
+
+            <p>Завдання №2</p>
+            <p><pre>
+                ; Функція для виводу комплексних чисел із списку на екран
+
+                (define (print-i numbers)
+                    (if (not (null? numbers))
+                    (begin
+                    (display (car numbers))
+                    
+                    (if (positive? (cadr numbers))
+                    (display " + ")
+                    (display " - "))
+                    
+                    (display (abs (cadr numbers)))
+                    (display "i")
+                    
+                    (if (not (null? (cddr numbers))) (display ", "))
+                    (print-i (cddr numbers)))
+                    )
+                )
+                
+                ; Функція для множення комплексних чисел
+                (define (mult-i a1 b1 a2 b2)
+                    (cons (- (* a1 a2) (* b1 b2)) (+ (* a1 b2) (* b1 a2)))
+                )
+                
+                
+                ; Функція для вирішення другого завдання лабораторної роботи
+                (define (task-2 numbers)
+                    (define (pr a b)
+                        (display "(")
+                        (display a)
+                        
+                        (if (positive? b)
+                        (display " + ")
+                        (display " - ")
+                        )
+                        
+                        (display (abs b))
+                        (display "i")
+                        (display ")")
+                    )
+                    
+                    
+                    (define (inner-3 nums a1 b1)
+                    
+                        (if (not (null? nums))
+                        (let* ((a2 (car nums)) (b2 (cadr nums)) (a3 (car (mult-i a1 b1 a2 b2))) (b3 (cdr (mult-i a1 b1 a2 b2))))
+                        (pr a1 b1)
+                        (display " * ")
+                        (pr a2 b2)
+                        (display " = ")
+                        (pr a3 b3)
+                        (newline)
+                        (append (list a3 b3) (inner-3 (cddr nums) a1 b1)))
+                        '()
+                        )
+                    )
+                    
+                    
+                    (if (not (null? (cddr numbers)))
+                    (begin
+                    (append (inner-3 (cddr numbers) (car numbers) (cadr numbers))
+                    (task-2 (cddr numbers))))
+                    
+                    '()
+                    )
+                )
+                
+                (define (r a b)
+                    (sqrt (+ (* a a) (* b b)))
+                )
+                
+                (define (mr n)
+                    (/ (round (* n 100)) 100)
+                )
+                
+                
+                
+                
+                (define (alg-to-tr nums)
+                    (if (not (null? nums))
+                    (append (list (mr (r (car nums) (cadr nums))) 
+                    (mr (acos (/ (car nums) (r (car nums) (cadr nums))))) 
+                    (mr (asin (/ (cadr nums) (r (car nums) (cadr nums)))))) 
+                    (alg-to-tr (cddr nums)))
+                
+                    '()
+                    )
+                )
+                
+                
+                
+                (define (print-i-tr numbers)
+                    (if (not (null? numbers))
+                    (begin
+                    (display (car numbers))
+                    (display " * (cos(")
+                    (display (cadr numbers))
+                    (display ") + i * sin(")
+                    (display (car (cddr numbers)))
+                    (display "))\n")
+                    (print-i-tr (cdr (cddr numbers))))
+                    )
+                )
+                
+                
+                
+                
+                
+                (define my-numbers-i (list 1 -2 -3 4 6 8 7 8))
+                    (print-i my-numbers-i)
+                
+                (display "\n\n")
+                
+                (define my-numbers-i-2 (task-2 my-numbers-i))
+                
+                (newline)
+                (print-i my-numbers-i-2)
+                
+                (newline)
+                (newline)
+                
+                (define my-numbers-i-3 (alg-to-tr my-numbers-i-2))
+                
+                (print-i-tr my-numbers-i-3)
+            </pre></p>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k6"></a>  Посилання на проект з вихідним кодом </h2>
+            <a href="https://www.jdoodle.com/embed/v0/4e4q">Код завдання №1 в jdoodle</a>
+            <br><a href="https://www.jdoodle.com/embed/v0/4e4t">Код завдання №2 в jdoodle</a>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k7"></a>  Скрін-шот результатів </h2>
+            <center>
+                <br><img src="/static/images/lab5/1.png">
+                <br><p>Скрін-шот №1</p>
+                <br><img src="/static/images/lab5/2.png">
+                <br><p >Скрін-шот №2</p>
+            </center>
+<!-- ------------------------------------------------------------------------ -->
+            <hr>
+            <h2 align="center"><a name="k8"></a>  Висновок </h2>
+            <P>
+                В процесі виконання даної лабораторної роботи було вирішено два задання. Для вирішення першого завдання було створено список з парною кількістю елементів, які є різними раціональними числами у вигляді дробів. Для кожної пари елементів списку було виведено повідомлення про їх рівність або нерівність, для цього було приведено усі дроби до спільного знаменника. В кінці було надруковано список після приведення елементів до спільного знаменника. Для вирішення другого завдання було створено список з парною кількістю елементів, які є комплексними числами в алгебраїчній формі a + ib. Після цього було також створено новий список, елементами якого є добутки кожної пари комплексних чисел першого списку. Отриманий список було виведено на екран.
+            </P>
+              
+        </div>
+    </div>
+</head>
